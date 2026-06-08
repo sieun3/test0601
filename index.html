@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moët & Chandon - Celebration of Craft</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        /* 변수 설정 */
+        :root {
+            --gold-primary: #c5a059;
+            --gold-light: #e5cf9c;
+            --gold-dark: #8e6d2f;
+            --bg-dark: #0a0b0d;
+            --text-light: #f5f5f7;
+            --rose-accent: #e0a899;
+            --ice-accent: #cbdcdb;
+            --theme-accent: var(--gold-primary);
+            --transition-speed: 0.8s;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* 더 하우스 콘서트 스타일의 미니멀 미세 그리드 프레임 */
+        .frame-line {
+            position: fixed;
+            background: rgba(197, 160, 89, 0.15);
+            z-index: 100;
+            pointer-events: none;
+            transition: background var(--transition-speed);
+        }
+        .frame-top { top: 30px; left: 30px; right: 30px; height: 1px; }
+        .frame-bottom { bottom: 30px; left: 30px; right: 30px; height: 1px; }
+        .frame-left { top: 30px; bottom: 30px; left: 30px; width: 1px; }
+        .frame-right { top: 30px; bottom: 30px; right: 30px; width: 1px; }
+
+        /* 배경 기포 애니메이션 */
+        .bubble-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -20px;
+            background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, rgba(197,160,89,0.1) 70%);
+            border-radius: 50%;
+            animation: rise 8s infinite ease-in-out;
+        }
+
+        @keyframes rise {
+            0% {
+                transform: translateY(0) scale(1) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-110vh) scale(0.5) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* 메인 레이아웃 섹션 */
+        section {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            padding: 100px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            z-index: 2;
+        }
+
+        /* 헤더 스타일링 */
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 25px;
+            margin-bottom: 40px;
+        }
+
+        header .logo-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+            color: var(--text-light);
+        }
+
+        header .logo-img {
+            width: 140px;
+            height: auto;
+            transition: transform 0.3s;
+        }
+
+        header ul {
+            display: flex;
+            gap: 40px;
+        }
+
+        header ul li {
+            list-style: none;
+        }
+
+        header ul li a {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.6);
+            text-decoration: none;
+            transition: color 0.3s, border-bottom 0.3s;
+            padding-bottom: 5px;
+            border-bottom: 1px solid transparent;
+        }
+
+        header ul li a:hover, header ul li a.active {
+            color: var(--theme-accent);
+            border-bottom: 1px solid var(--theme-accent);
+        }
+
+        /* 메인 콘텐츠 영역 */
+        .content {
+            flex-grow: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            gap: 50px;
+        }
+
+        /* 텍스트 영역 */
+        .content .textBox {
+            max-width: 550px;
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        /* 페이드 트랜지션 클래스 */
+        .textBox.fade-out {
+            opacity: 0;
+            transform: translateY(15px);
+        }
+
+        .content .textBox h4 {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--theme-accent);
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin-bottom: 15px;
+            transition: color var(--transition-speed);
+        }
+
+        .content .textBox h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.8rem;
+            line-height: 1.2;
+            font-weight: 400;
+            margin-bottom: 25px;
+            letter-spacing: -1px;
+        }
+
+        .content .textBox h2 span {
+            font-style: italic;
+            font-weight: 600;
+            color: var(--theme-accent);
+            transition: color var(--transition-speed);
+        }
+
+        .content .textBox p {
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            margin-bottom: 35px;
+        }
+
+        /* 버튼 디자인 */
+        .content .textBox .cta-btn {
+            display: inline-block;
+            padding: 12px 35px;
+            border: 1px solid var(--theme-accent);
+            color: var(--text-light);
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-decoration: none;
+            background: transparent;
+            position: relative;
+            overflow: hidden;
+            transition: color 0.4s, border-color var(--transition-speed);
+        }
+
+        .content .textBox .cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--theme-accent);
+            transition: left 0.4s ease;
+            z-index: -1;
+        }
+
+        .content .textBox .cta-btn:hover {
+            color: var(--bg-dark);
+            font-weight: 500;
+        }
+
+        .content .textBox .cta-btn:hover::before {
+            left: 0;
+        }
+
+        /* 이미지 영역 */
+        .content .imgBox {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            height: 500px;
+        }
+
+        /* 빛 후광 효과 */
+        .glow-back {
+    position: absolute;
+    width: 550px;
+    height: 550px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(197, 160, 89, 0.15) 0%, rgba(197, 160, 89, 0) 70%);
+    z-index: -1;
+    transition: background var(--transition-speed);
+        }
+
+        /* 보틀 뷰포트 */
+        .bottle-viewer {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .bottle-img {
+    position: absolute;
+    height: 580px; /* 크기가 더 시원하고 웅장하게 보이도록 조정 */
+    width: auto;
+    opacity: 0;
+    transform: scale(0.9) translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+    pointer-events: none;
+    object-fit: contain;
+        }
+
+        .bottle-img.active {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+            pointer-events: auto;
+            filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.7));
+        }
+
+        /* 하단 썸네일 컨트롤러 */
+        .thumb-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 30px;
+        }
+
+        .thumb {
+            display: flex;
+            gap: 50px;
+        }
+
+        .thumb li {
+            list-style: none;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: 0.4s;
+        }
+
+        .thumb li::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            width: 0;
+            height: 2px;
+            background-color: var(--theme-accent);
+            transition: width 0.3s, background-color var(--transition-speed);
+        }
+
+        .thumb li.active::after {
+            width: 100%;
+        }
+
+        .thumb li:hover {
+            transform: translateY(-8px);
+        }
+
+        .thumb-label {
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            margin-top: 10px;
+            transition: color 0.3s;
+        }
+
+        .thumb li.active .thumb-label {
+            color: var(--theme-accent);
+            font-weight: 500;
+        }
+
+        .thumb-img {
+            height: 80px;
+            width: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+        }
+
+        /* 우측 소셜 미디어 내비게이션 */
+        .sci {
+            position: absolute;
+            top: 50%;
+            right: 50px;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .sci li {
+            list-style: none;
+        }
+
+        .sci li a {
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            font-size: 12px;
+            writing-mode: vertical-lr;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .sci li a:hover {
+            color: var(--theme-accent);
+        }
+
+        .sci-line {
+            width: 1px;
+            height: 60px;
+            background: rgba(197, 160, 89, 0.2);
+            margin: 10px 0;
+            transition: background var(--transition-speed);
+        }
+
+        /* 반응형 모바일 최적화 */
+        @media (max-width: 1024px) {
+            section {
+                padding: 50px;
+            }
+            .content {
+                flex-direction: column;
+                text-align: center;
+                gap: 40px;
+                padding-top: 50px;
+            }
+            .content .textBox h2 {
+                font-size: 2.8rem;
+            }
+            .content .imgBox {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    height: 600px;
+            }
+            .bottle-img {
+                height: 330px;
+            }
+            .glow-back {
+                width: 300px;
+                height: 300px;
+            }
+            .sci {
+                position: relative;
+                top: auto;
+                right: auto;
+                transform: none;
+                flex-direction: row;
+                justify-content: center;
+                margin-top: 40px;
+                gap: 30px;
+            }
+            .sci li a {
+                writing-mode: horizontal-tb;
+            }
+            .sci-line {
+                display: none;
+            }
+            .frame-line {
+                display: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            section {
+                padding: 40px 30px;
+            }
+            header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            header ul {
+                gap: 20px;
+            }
+            .content .textBox h2 {
+                font-size: 2.2rem;
+            }
+            .thumb {
+                gap: 20px;
+            }
+            .thumb-img {
+                height: 65px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="frame-line frame-top"></div>
+    <div class="frame-line frame-bottom"></div>
+    <div class="frame-line frame-left"></div>
+    <div class="frame-line frame-right"></div>
+
+    <div class="bubble-container" id="bubbleContainer"></div>
+
+    <section>
+        <header>
+            <a href="#" class="logo-container">
+                <img src="img/Logo_Moët_&_Chandon.png" alt="Moët & Chandon" class="logo-img">
+            </a>
+            <ul>
+                <li><a href="#" class="active">Heritage</a></li>
+                <li><a href="#">Collection</a></li>
+                <li><a href="#">Bespoke Experience</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </header>
+
+        <div class="content">
+            <div class="textBox" id="textBox">
+                <h4 id="champagneCategory">Maison Classic</h4>
+                <h2 id="champagneTitle">Moët <span>Impérial</span></h2>
+                <p id="champagneDesc">1869년에 탄생한 모엣 임페리얼은 메종을 대표하는 가장 상징적인 샴페인입니다. 피노 누아의 풍부함, 피노 뮈니에의 유연함, 그리고 샤도네이의 신선함이 정교하게 어우러져 매혹적인 과일 향과 기분 좋은 우아함을 선사합니다.</p>
+                <a href="#" class="cta-btn">Discover The Craft</a>
+            </div>
+
+            <div class="imgBox">
+                <div class="glow-back" id="glowBack"></div>
+                <div class="bottle-viewer">
+                    <img src="img/moet_imperial.png" class="bottle-img active" id="bottle1" alt="Moët Impérial">
+                    <img src="img/Rosé_Impérial.png" class="bottle-img" id="bottle2" alt="Rosé Impérial">
+                    <img src="img/Ice_Impérial.png" class="bottle-img" id="bottle3" alt="Ice Impérial">
+                </div>
+            </div>
+        </div>
+
+        <div class="thumb-container">
+            <ul class="thumb">
+                <li class="active" onclick="switchProduct(1, '#c5a059')">
+                    <img src="img/moet_imperial.png" class="thumb-img" alt="Impérial Thumbnail">
+                    <span class="thumb-label">Impérial</span>
+                </li>
+                <li onclick="switchProduct(2, '#e0a899')">
+                    <img src="img/Rosé_Impérial.png" class="thumb-img" alt="Rosé Impérial Thumbnail">
+                    <span class="thumb-label">Rosé Impérial</span>
+                </li>
+                <li onclick="switchProduct(3, '#cbdcdb')">
+                    <img src="img/Ice_Impérial.png" class="thumb-img" alt="Ice Impérial Thumbnail">
+                    <span class="thumb-label">Ice Impérial</span>
+                </li>
+            </ul>
+        </div>
+
+        <ul class="sci">
+            <li><a href="#">Instagram</a></li>
+            <div class="sci-line"></div>
+            <li><a href="#">Facebook</a></li>
+            <div class="sci-line"></div>
+            <li><a href="#">Maison 1743</a></li>
+        </ul>
+    </section>
+
+    <script>
+        // 제품 데이터 에셋
+        const productsData = {
+            1: {
+                category: "Maison Classic",
+                title: "Moët <span>Impérial</span>",
+                desc: "1869년에 탄생한 모엣 임페리얼은 메종을 대표하는 가장 상징적인 샴페인입니다. 피노 누아의 풍부함, 피노 뮈니에의 유연함, 그리고 샤도네이의 신선함이 정교하게 어우러져 매혹적인 과일 향과 기분 좋은 우아함을 선사합니다.",
+                btnText: "Discover The Craft"
+            },
+            2: {
+                category: "Sensual & Radiant",
+                title: "Rosé <span>Impérial</span>",
+                desc: "로제 임페리얼은 매혹적인 과일 풍미와 엘레강스한 무드가 어우러진 화사하고 낭만적인 샴페인입니다. 붉은색 계열 과일의 신선하고 생동감 넘치는 향과 약간의 매콤한 풍미가 입안 가득 피어오릅니다.",
+                btnText: "Savor the Romance"
+            },
+            3: {
+                category: "Refreshing & Modern",
+                title: "Ice <span>Impérial</span>",
+                desc: "아이스 임페리얼은 얼음과 함께 즐기도록 특별히 블렌딩된 최초의 혁신적인 샴페인입니다. 열대 과일의 풍성하고 시원한 달콤함과 캐러멜의 깊은 맛이 어우러져 한여름의 눈부신 여유를 완성합니다.",
+                btnText: "Cool Your Senses"
+            }
+        };
+
+        // 제품 스위칭 핸들러 (수정됨: .bottle-img 클래스 타겟팅)
+        function switchProduct(index, accentColor) {
+            const thumbs = document.querySelectorAll('.thumb li');
+            thumbs.forEach((thumb, idx) => {
+                if (idx === index - 1) {
+                    thumb.classList.add('active');
+                } else {
+                    thumb.classList.remove('active');
+                }
+            });
+
+            document.documentElement.style.setProperty('--theme-accent', accentColor);
+
+            const glow = document.getElementById('glowBack');
+            if (index === 1) {
+                glow.style.background = `radial-gradient(circle, rgba(197, 160, 89, 0.18) 0%, rgba(197, 160, 89, 0) 70%)`;
+            } else if (index === 2) {
+                glow.style.background = `radial-gradient(circle, rgba(224, 168, 153, 0.18) 0%, rgba(224, 168, 153, 0) 70%)`;
+            } else if (index === 3) {
+                glow.style.background = `radial-gradient(circle, rgba(203, 220, 219, 0.18) 0%, rgba(203, 220, 219, 0) 70%)`;
+            }
+
+            const textBox = document.getElementById('textBox');
+            textBox.classList.add('fade-out');
+
+            setTimeout(() => {
+                const data = productsData[index];
+                document.getElementById('champagneCategory').textContent = data.category;
+                document.getElementById('champagneTitle').innerHTML = data.title;
+                document.getElementById('champagneDesc').textContent = data.desc;
+                document.querySelector('.cta-btn').textContent = data.btnText;
+                
+                textBox.classList.remove('fade-out');
+            }, 350);
+
+            // 이미지 변경 인터랙션 적용
+            const bottles = document.querySelectorAll('.bottle-img');
+            bottles.forEach((bottle) => {
+                bottle.classList.remove('active');
+            });
+            document.getElementById(`bottle${index}`).classList.add('active');
+        }
+
+        // 배경 기포 생성
+        function generateBubbles() {
+            const container = document.getElementById('bubbleContainer');
+            const numBubbles = 40;
+
+            for (let i = 0; i < numBubbles; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                
+                const size = Math.random() * 8 + 3;
+                const leftPos = Math.random() * 100;
+                const delay = Math.random() * 8;
+                const duration = Math.random() * 6 + 5;
+
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${leftPos}%`;
+                bubble.style.animationDelay = `${delay}s`;
+                bubble.style.animationDuration = `${duration}s`;
+
+                container.appendChild(bubble);
+            }
+        }
+
+        window.onload = function() {
+            generateBubbles();
+        };
+    </script>
+</body>
+</html>
